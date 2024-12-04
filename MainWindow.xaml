@@ -1,0 +1,121 @@
+﻿<Window x:Class="SnakeGame.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SnakeGame"
+        mc:Ignorable="d"
+        Title="Snake Game" Height="450" Width="800" KeyDown="Window_KeyDown">
+    <Grid Margin="10">
+        <!-- Главное меню -->
+        <StackPanel Name="MainMenuPanel" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Заголовок меню -->
+            <TextBlock Text="Snake Game" FontSize="36" FontWeight="Bold" Foreground="Black" 
+                       HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+            <!-- Кнопка для начала игры -->
+            <Button Content="Играть" Width="200" Height="30" 
+                    HorizontalAlignment="Center" Margin="0,10"
+                    Click="StartGame_Click" FontSize="20" Foreground="Black" Background="White"/>
+
+            <Button Name="ModeButton" Content="Режим: Обычный" Width="200" Height="30" 
+        HorizontalAlignment="Center" Margin="0,10"
+        Click="ModeButton_Click" FontSize="20" Foreground="Black" Background="White"/>
+
+            <!-- Кнопка для показа управления -->
+            <Button Content="Управление" Width="200" Height="30" 
+                    HorizontalAlignment="Center" Margin="0,10"
+                    Click="ShowControls_Click" FontSize="20" Foreground="Black" Background="White"/>
+
+            <!-- Кнопка для показа информации о создателе -->
+            <Button Content="О создателе" Width="200" Height="30" 
+                    HorizontalAlignment="Center" Margin="0,10"
+                    Click="ShowCreatorInfo_Click" FontSize="20" Foreground="Black" Background="White"/>
+
+
+            <Button Content="Таблица рекордов" Width="200" Height="30" 
+         HorizontalAlignment="Center" Margin="0,10"
+         Click="ShowHighScores_Click" FontSize="20" Foreground="Black" Background="White"/>
+            <!-- Кнопка для выхода из игры -->
+            <Button Content="Выход из игры" Width="200" Height="30" 
+                    HorizontalAlignment="Center" Margin="0,10"
+                    Click="ExitGame_Click" FontSize="20" Foreground="Black" Background="White"/>
+
+        </StackPanel>
+
+        <!-- Поле для игры (белое) -->
+        <Canvas x:Name="GameCanvas" Background="White" Width="600" Height="400"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Visibility="Collapsed">
+            <!-- Границы поля игры -->
+            <Line X1="0" Y1="0" X2="600" Y2="0" Stroke="Black" StrokeThickness="2"/>
+            <Line X1="0" Y1="0" X2="0" Y2="400" Stroke="Black" StrokeThickness="2"/>
+            <Line X1="600" Y1="0" X2="600" Y2="400" Stroke="Black" StrokeThickness="2"/>
+            <Line X1="0" Y1="400" X2="600" Y2="400" Stroke="Black" StrokeThickness="2"/>
+        </Canvas>
+
+        <!-- Панель управления -->
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Width="160" Margin="10" Visibility="Collapsed" Name="ControlPanel">
+            <TextBlock Name="ScoreTextBlock" Text="Score: 0" 
+               FontSize="24" Foreground="Black" 
+               HorizontalAlignment="Center" Margin="0,10,0,10"/>
+
+            <Button Name="PauseButton" Content="Пауза" 
+            Width="120" Height="40" 
+            HorizontalAlignment="Center" Margin="0,10,0,10" 
+            Click="PauseButton_Click" Foreground="Black" Background="White"/>
+
+
+            <!-- Кнопка для выхода в меню с таким же размером текста -->
+            <Button Name="ExitButton" Content="Выход в меню" 
+            Width="120" Height="40" 
+            HorizontalAlignment="Center" Margin="0,10,0,10"
+            Click="ExitButton_Click" 
+            Foreground="Black" Background="White"/>
+        </StackPanel>
+
+        <!-- Таблица рекордов (скрыта по умолчанию) -->
+        <Grid>
+            <!-- Панель таблицы рекордов на всю высоту окна -->
+            <StackPanel Name="HighScoresPanel" Visibility="Collapsed" Background="#333" 
+                    HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="10">
+                <TextBlock Text="Таблица рекордов"   FontSize="28" Foreground="White" FontWeight="Bold"
+                       HorizontalAlignment="Center" Margin="0,20,0,15"/>
+
+                <!-- Таблица с рекордами на всю высоту окна -->
+                <Border BorderBrush="White" BorderThickness="1" Margin="10" CornerRadius="12" Background="#444" 
+                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <ListView Name="HighScoresList" Foreground="White" Background="Transparent" 
+                          FontSize="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                          Margin="10,10,10,10">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Игрок" DisplayMemberBinding="{Binding PlayerName}" Width="300"/>
+                                <GridViewColumn Header="Очки" DisplayMemberBinding="{Binding Score}" Width="150"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Border>
+
+                <!-- Кнопка для выхода в меню -->
+                <Button Content="Назад в меню" Width="200" Height="45" HorizontalAlignment="Center" Margin="20,20"
+                    Click="BackToMainMenu_Click" FontSize="18" Foreground="Black" Background="#F5A623" 
+                    BorderBrush="#F5A623" BorderThickness="2"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Панель управления (появляется при нажатии на "Управление") -->
+        <StackPanel Name="ControlsPanel" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Управление" FontSize="24" FontWeight="Bold" Margin="0,10,0,20"/>
+            <TextBlock Text="Используйте клавиши стрелок для управления змейкой." FontSize="16" Margin="0,0,0,20"/>
+            <Button Content="Назад" Width="120" Height="40" Click="BackToMainMenu_Click"/>
+        </StackPanel>
+
+        <!-- Панель информации о создателе -->
+        <StackPanel Name="CreatorInfoPanel" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="О создателе" FontSize="24" FontWeight="Bold" Margin="0,10,0,20"/>
+            <TextBlock Text="Создатель: Ивлев Арсений О734Б" FontSize="16" Margin="0,0,0,20"/>
+            <TextBlock Text="Этот проект создан для демонстрации игры Snake на WPF." FontSize="16" Margin="0,0,0,20"/>
+            <Button Content="Назад" Width="120" Height="40" Click="BackToMainMenu_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
